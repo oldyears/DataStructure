@@ -4,7 +4,6 @@ import game2048rendering.Board;
 import game2048rendering.Side;
 import game2048rendering.Tile;
 
-import javax.xml.stream.events.StartDocument;
 import java.util.Formatter;
 
 
@@ -170,15 +169,25 @@ public class Model {
 
         // TODO: Tasks 5, 6, and 10. Fill in this function.
         // get the correct y
-        while(++targetY < board.size()) {
+        while (++targetY < board.size()) {
             Tile upTile = board.tile(x, targetY);
             if (upTile != null) {
+                // merge
+                if (upTile.value() == myValue && !upTile.wasMerged()) {
+                    board.move(x, targetY, currTile);
+                    score += myValue * 2;
+                    break;
+                }
+                // can't merge, so targetY-1, not itself
+                if (targetY != y + 1) {
+                    board.move(x, --targetY, currTile);
+                }
                 break;
             }
+            if (targetY == board.size() - 1) {
+                board.move(x, targetY, currTile);
+            }
         }
-        targetY--;
-        // move
-        board.move(x, targetY, currTile);
     }
 
     /** Handles the movements of the tilt in column x of the board
@@ -188,10 +197,22 @@ public class Model {
      * */
     public void tiltColumn(int x) {
         // TODO: Task 7. Fill in this function.
+        for (int j = board.size() - 1; j >= 0; j--) {
+            Tile t = board.tile(x, j);
+            if (t != null) {
+                moveTileUpAsFarAsPossible(x, j);
+            }
+        }
+
     }
 
     public void tilt(Side side) {
         // TODO: Tasks 8 and 9. Fill in this function.
+        board.setViewingPerspective(side);
+        for (int i = 0; i < size(); i++) {
+            tiltColumn(i);
+        }
+        board.setViewingPerspective(Side.NORTH);
     }
 
     /** Tilts every column of the board toward SIDE.
