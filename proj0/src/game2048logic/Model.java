@@ -4,6 +4,7 @@ import game2048rendering.Board;
 import game2048rendering.Side;
 import game2048rendering.Tile;
 
+import javax.xml.stream.events.StartDocument;
 import java.util.Formatter;
 
 
@@ -85,6 +86,13 @@ public class Model {
      * */
     public boolean emptySpaceExists() {
         // TODO: Task 2. Fill in this function.
+        for (int i = 0; i < board.size(); i++) {
+            for (int j = 0; j < board.size(); j++) {
+                if (tile(i, j) == null) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -95,6 +103,16 @@ public class Model {
      */
     public boolean maxTileExists() {
         // TODO: Task 3. Fill in this function.
+        for (int i = 0; i < board.size(); i++) {
+            for (int j = 0; j < board.size(); j++) {
+                Tile t = tile(i, j);
+                if (t != null) {
+                    if (t.value() == MAX_PIECE) {
+                        return true;
+                    }
+                }
+            }
+        }
         return false;
     }
 
@@ -106,6 +124,28 @@ public class Model {
      */
     public boolean atLeastOneMoveExists() {
         // TODO: Fill in this function.
+        for (int i = 0; i < board.size(); i++) {
+            for (int j = 0; j < board.size(); j++) {
+                Tile t = tile(i, j);
+                if (t == null) {
+                    return true;
+                }
+
+                // just  check right and down
+                if (j + 1 < board.size()) {
+                    Tile leftT = tile(i, j + 1);
+                    if (leftT == null || leftT.value() == t.value()) {
+                        return true;
+                    }
+                }
+                if (i + 1 < board.size()) {
+                    Tile downT = tile(i + 1, j);
+                    if (downT == null || downT.value() == t.value()) {
+                        return true;
+                    }
+                }
+            }
+        }
         return false;
     }
 
@@ -129,6 +169,16 @@ public class Model {
         int targetY = y;
 
         // TODO: Tasks 5, 6, and 10. Fill in this function.
+        // get the correct y
+        while(++targetY < board.size()) {
+            Tile upTile = board.tile(x, targetY);
+            if (upTile != null) {
+                break;
+            }
+        }
+        targetY--;
+        // move
+        board.move(x, targetY, currTile);
     }
 
     /** Handles the movements of the tilt in column x of the board
