@@ -1,4 +1,6 @@
 import org.junit.jupiter.api.Test;
+import ucb.util.Stopwatch;
+
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -81,8 +83,52 @@ public class PercolationTest {
     // TODO: Using the given tests above as a template,
     //       write some more tests and delete the fail() line
     @Test
-    public void yourFirstTestHere() {
-        fail("Did you write your own tests?");
+    public void OpenTest() {
+        int N = 5;
+        Percolation p = new Percolation(N);
+
+        p.open(0, 0);
+        assertThat(p.isOpen(0 , 0)).isEqualTo(true);
+
+        p.open(1, 0);
+        p.open(2, 0);
+        p.open(3, 0);
+        p.open(4, 0);
+        p.open(4, 2);
+        p.open(3, 2);
+
+        assertThat(p.isFull(4, 0)).isEqualTo(true);
+        assertThat(p.isFull(1, 2)).isEqualTo(false);
+        assertThat(p.isFull(4, 2)).isEqualTo(true);
+        assertThat(p.percolates()).isEqualTo(true);
     }
 
+    @Test
+    public void runtimeTest() {
+        int trials = 100, gridSize = 50;
+
+        Stopwatch timer1 = new Stopwatch();
+        timer1.start();
+        PercolationStats ps1 = new PercolationStats(gridSize, trials);
+        double time1 = timer1.getElapsed();
+        timer1.stop();
+        System.out.println("Time for percolation_100_50: " + time1);
+
+        trials = 200;
+        gridSize = 50;
+        timer1.start();
+        PercolationStats ps2 = new PercolationStats(gridSize, trials);
+        double time2 = timer1.getElapsed();
+        timer1.stop();
+        System.out.println("Time for percolation_200_50: " + time2);
+
+        trials = 100;
+        gridSize = 100;
+        timer1.start();
+        PercolationStats ps3 = new PercolationStats(gridSize, trials);
+        double time3 = timer1.getElapsed();
+        timer1.stop();
+        System.out.println("Time for percolation_100_100: " + time3);
+
+    }
 }
