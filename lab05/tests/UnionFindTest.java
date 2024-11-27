@@ -86,6 +86,45 @@ public class UnionFindTest {
      * of all methods in your implementation.
      */
 
+    /**
+     * the disjoint set tree just is like following:
+     *          3           7               7
+     *        /  \         / \             / \  \
+     *       2    1   +   6   5     ->    6   5  3
+     *           /           /               /  / \
+     *          0           4               4  2  1
+     *                                           /
+     *                                          0
+     *  after path-compression, the disjoint set tree should be like following:
+     *          7
+     *         / \  \  \  \
+     *        6   5  3  1  0
+     *           /  /
+     *          4  2
+     */
+    @Test
+    public void pathCompressionTest() {
+        UnionFind uf = new UnionFind(8);
+        uf.union(0, 1);
+        uf.union(2, 3);
+        uf.union(1, 3);
+
+        uf.union(4, 5);
+        uf.union(6, 7);
+        uf.union(5, 7);
+
+        assertThat(uf.connected(3, 7)).isFalse();
+
+        uf.union(3, 7);
+
+        assertThat(uf.find(0)).isEqualTo(7);
+        assertThat(uf.parent(0)).isEqualTo(7);
+        assertThat(uf.parent(1)).isEqualTo(7);
+        assertThat(uf.parent(3)).isEqualTo(7);
+
+        assertThat(uf.connected(0, 7)).isTrue();
+        assertThat(uf.connected(1, 7)).isTrue();
+    }
 }
 
 
