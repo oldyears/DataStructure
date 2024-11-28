@@ -15,6 +15,7 @@ public class AllTest {
 
     @Test
     public void AllTempTest() {
-
+        System.out.println("胡永乐".hashCode());
+        System.out.println("+=ERsda".hashCode());
     }
 }
