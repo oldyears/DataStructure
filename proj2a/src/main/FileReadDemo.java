@@ -7,6 +7,7 @@ import static utils.Utils.*;
 public class FileReadDemo {
     public static void main(String[] args) {
         In in = new In(SHORT_WORDS_FILE);
+        In in1 = new In("./data/wordnet/hyponyms11.txt");
         int i = 0;
 
         while (!in.isEmpty()) {
