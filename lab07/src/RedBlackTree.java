@@ -71,8 +71,9 @@ public class RedBlackTree<T extends Comparable<T>> {
         newRoot.right = node;
 
         // swap two node's color
-        node.isBlack = !node.isBlack;
-        newRoot.isBlack = !newRoot.isBlack;
+        boolean temp = node.isBlack;
+        node.isBlack = newRoot.isBlack;
+        newRoot.isBlack = temp;
         return newRoot;
     }
 
@@ -91,8 +92,9 @@ public class RedBlackTree<T extends Comparable<T>> {
         newRoot.left = node;
 
         // swap two node's color
-        node.isBlack = !node.isBlack;
-        newRoot.isBlack = !newRoot.isBlack;
+        boolean temp = node.isBlack;
+        node.isBlack = newRoot.isBlack;
+        newRoot.isBlack = temp;
         return newRoot;
     }
 
@@ -135,11 +137,25 @@ public class RedBlackTree<T extends Comparable<T>> {
         else if (node.item.compareTo(item) < 0) {
             node.right = insert(node.right, item);
         }
-        // TODO: Rotate left operation
 
-        // TODO: Rotate right operation
+        while (true) {
+            boolean ifFlip = isRed(node.left) && isRed(node.right);
+            boolean ifRotateLeft = isRed(node.right);
+            boolean ifRotateRight = isRed(node.left) && isRed(node.left.left);
 
-        // TODO: Color flip
+            if (!ifFlip && !ifRotateLeft && !ifRotateRight) {
+                break;
+            }
+            if (isRed(node.left) && isRed(node.right)) {
+                flipColors(node);
+            }
+            if (isRed(node.right)) {
+                node = rotateLeft(node);
+            }
+            if (isRed(node.left) && isRed(node.left.left)) {
+                node = rotateRight(node);
+            }
+        }
 
         return node; //fix this return statement
     }
