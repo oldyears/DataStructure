@@ -84,19 +84,6 @@ public class TimeSeries extends TreeMap<Integer, Double> {
                 result.put(year, this.getOrDefault(year, 0.0) + ts.getOrDefault(year, 0.0));
             }
         }
-
-//        for (int year : this.keySet()) {
-//            result.put(year, this.get(year));
-//        }
-//
-//        for (int year : ts.keySet()) {
-//            if (result.containsKey(year)) {
-//                result.put(year, result.get(year) + ts.get(year));
-//            } else {
-//                result.put(year, ts.get(year));
-//            }
-//
-//        }
         return result;
     }
 

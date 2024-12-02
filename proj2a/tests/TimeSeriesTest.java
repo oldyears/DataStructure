@@ -86,8 +86,11 @@ public class TimeSeriesTest {
 
     @Test
     public void tempTest() {
-        String a = "123.3";
-        System.out.println(Double.parseDouble(a));
+        TimeSeries catPopulation = new TimeSeries();
+        catPopulation.put(1991, 500.0);
+        catPopulation.put(1992, 1000.0);
+        catPopulation.put(1994, 1800.0);;
+        System.out.println(catPopulation.toString());
     }
 
 } 
