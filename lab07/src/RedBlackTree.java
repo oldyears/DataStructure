@@ -51,6 +51,9 @@ public class RedBlackTree<T extends Comparable<T>> {
      */
     void flipColors(RBTreeNode<T> node) {
         // TODO: YOUR CODE HERE
+        node.isBlack = !node.isBlack;
+        node.left.isBlack = !node.left.isBlack;
+        node.right.isBlack = !node.right.isBlack;
     }
 
     /**
@@ -62,7 +65,15 @@ public class RedBlackTree<T extends Comparable<T>> {
      */
     RBTreeNode<T> rotateRight(RBTreeNode<T> node) {
         // TODO: YOUR CODE HERE
-        return null;
+        // change the root of node's subtree to node.left
+        RBTreeNode<T> newRoot = node.left;
+        node.left = newRoot.right;
+        newRoot.right = node;
+
+        // swap two node's color
+        node.isBlack = !node.isBlack;
+        newRoot.isBlack = !newRoot.isBlack;
+        return newRoot;
     }
 
     /**
@@ -74,7 +85,15 @@ public class RedBlackTree<T extends Comparable<T>> {
      */
     RBTreeNode<T> rotateLeft(RBTreeNode<T> node) {
         // TODO: YOUR CODE HERE
-        return null;
+        // change the root of node's subtree to node.right
+        RBTreeNode<T> newRoot = node.right;
+        node.right = newRoot.left;
+        newRoot.left = node;
+
+        // swap two node's color
+        node.isBlack = !node.isBlack;
+        newRoot.isBlack = !newRoot.isBlack;
+        return newRoot;
     }
 
     /**
@@ -106,16 +125,25 @@ public class RedBlackTree<T extends Comparable<T>> {
      */
     private RBTreeNode<T> insert(RBTreeNode<T> node, T item) {
         // TODO: Insert (return) new red leaf node.
-
+        if (node == null) {
+            return new RBTreeNode<>(false, item, null, null);
+        }
         // TODO: Handle normal binary search tree insertion.
-
+        else if (node.item.compareTo(item) > 0) {
+            node.left = insert(node.left, item);
+        }
+        else if (node.item.compareTo(item) < 0) {
+            node.right = insert(node.right, item);
+        }
         // TODO: Rotate left operation
 
         // TODO: Rotate right operation
 
         // TODO: Color flip
 
-        return null; //fix this return statement
+        return node; //fix this return statement
     }
+
+
 
 }
