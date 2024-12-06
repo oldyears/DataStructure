@@ -1,9 +1,6 @@
 package hashmap;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Set;
+import java.util.*;
 
 /**
  *  A hash table-backed Map implementation.
@@ -32,6 +29,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     private int capacity = 16;
     private double loadFactor = 0.75;
     private int size;
+    private Set<K> keySet;
 
     /** Constructors */
     public MyHashMap() {
@@ -145,6 +143,9 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      */
     @Override
     public boolean containsKey(K key) {
+        if (buckets[bucketKey(key)] == null) {
+            return false;
+        }
         for (Node node : buckets[bucketKey(key)]) {
             if (node.key.equals(key)) {
                 return true;
@@ -181,7 +182,15 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      */
     @Override
     public Set<K> keySet() {
-        return Set.of();
+        if (keySet == null) {
+            keySet = new HashSet<>();
+            for (Collection<Node> bucket : buckets) {
+                for (Node node : bucket) {
+                    keySet.add(node.key);
+                }
+            }
+        }
+        return keySet;
     }
 
     /**
@@ -194,6 +203,16 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      */
     @Override
     public V remove(K key) {
+        if (containsKey(key)) {
+            for (Node node : buckets[bucketKey(key)]) {
+                if (node.key.equals(key)) {
+                    V value = node.value;
+                    buckets[bucketKey(key)].remove(node);
+                    size--;
+                    return value;
+                }
+            }
+        }
         return null;
     }
 
@@ -219,9 +238,38 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
                 newBuckets[bucketKey(node.key)].add(node);
             }
         }
+        buckets = newBuckets;
     }
 
     private int bucketKey(K key) {
         return Math.floorMod(key.hashCode(), capacity);
+    }
+
+    private class MyHashMapIterator implements Iterator<K> {
+
+        /**
+         * Returns {@code true} if the iteration has more elements.
+         * (In other words, returns {@code true} if {@link #next} would
+         * return an element rather than throwing an exception.)
+         *
+         * @return {@code true} if the iteration has more elements
+         */
+        @Override
+        public boolean hasNext() {
+            return false;
+        }
+
+        /**
+         * Returns the next element in the iteration.
+         *
+         * @return the next element in the iteration
+         * @throws NoSuchElementException if the iteration has no more elements
+         */
+        @Override
+        public K next() {
+            return null;
+        }
+
+        private Iterator<K> iterator;
     }
 }
