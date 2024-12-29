@@ -3,6 +3,8 @@ package main;
 import edu.princeton.cs.algs4.In;
 
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class WordNet {
     // use a graph to store the data
@@ -20,7 +22,7 @@ public class WordNet {
             String data= sysIn.readLine();
             String[] sysData = data.split(",");
             int id = Integer.parseInt(sysData[0]);
-            String[] synsets = sysData[1].split(",");
+            String[] synsets = sysData[1].split(" ");
             graph.createVertex(id, synsets);
         }
 
@@ -33,6 +35,10 @@ public class WordNet {
                 graph.addDirectedEdge(id, Integer.parseInt(hyponyms[i]));
             }
         }
+    }
+
+    public Set<String> hyponyms(String word) {
+        return null;
     }
 
 
